@@ -19,8 +19,8 @@ A very noob distro that have no sense of what are we doing in emacs...
 (require 'buffer-move)   ;; Buffer-move for better window management
 
 (use-package all-the-icons
-  :ensure t
-  :if(display-graphic-p))
+  :ensure t)
+  ;; :if(display-graphic-p))
 
 (use-package all-the-icons-dired
   :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
@@ -91,15 +91,15 @@ A very noob distro that have no sense of what are we doing in emacs...
 (setq org-return-follows-link  t)
 
 (set-face-attribute 'default nil
-  :font "MonoLisa Nerd Font"
+  :font "MonoLisa"
   :height 110
   :weight 'medium)
 (set-face-attribute 'variable-pitch nil
-  :font "MonoLisa Nerd Font"
+  :font "MonoLisa"
   :height 120
   :weight 'medium)
 (set-face-attribute 'fixed-pitch nil
-  :font "MonoLisa Nerd Font"
+  :font "MonoLisa"
   :height 110
   :weight 'medium)
 ;; Makes commented text and keywords italics.
@@ -113,7 +113,7 @@ A very noob distro that have no sense of what are we doing in emacs...
 ;; This sets the default font on all graphical frames created after restarting Emacs.
 ;; Does the same thing as 'set-face-attribute default' above, but emacsclient fonts
 ;; are not right unless I also add this method of setting the default font.
-(add-to-list 'default-frame-alist '(font . "MonoLisa Nerd Font-12"))
+(add-to-list 'default-frame-alist '(font . "MonoLisa-12"))
 ;; Uncomment the following line if line spacing needs adjusting.
 (setq-default line-spacing 0.12)
 
@@ -460,7 +460,7 @@ A very noob distro that have no sense of what are we doing in emacs...
   :hook ((emacs-lisp-mode . rainbow-delimiters-mode)
          (clojure-mode . rainbow-delimiters-mode)))
 
-;; (package rainbow-mode)
+(use-package rainbow-mode)
 
 (delete-selection-mode 1)    ;; You can select text and delete it by typing.
 (electric-indent-mode -1)    ;; Turn off the weird indenting that Emacs does by default.
