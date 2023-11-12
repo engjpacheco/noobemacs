@@ -4,13 +4,8 @@
 #+STARTUP: showeverything
 #+OPTIONS: toc:2
 
-* TODO 
- - [X] Make a readable /config.org/ file.
- - [X] Make a custom file configuration file, something like: /user-config.el/.
- - [ ] Add more org configuration.
-
 ** Useful scripts
-, package manger and others.
+Package manger and others.
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path "~/.emacs.d/config/")
 (add-to-list 'load-path "~/.emacs.d/userconf/")
@@ -30,7 +25,6 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 #+end_src
-
 
 ** Icons for a better lock.
 #+begin_src emacs-lisp
