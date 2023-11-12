@@ -7,6 +7,10 @@
 * Noob emacs.
 A very noob distro that have no sense of what are we doing in emacs...
 
+** Package manager: /elpaca/.
+
+This config uses /elpaca/ as the package manager.
+
 ** Install.
 #+begin_src sh
 git clone https://codeberg.org/jpacheco/noobemacs --depth 1 ~/.emacs.d && emacs
@@ -14,6 +18,7 @@ git clone https://codeberg.org/jpacheco/noobemacs --depth 1 ~/.emacs.d && emacs
 
 ** Configuration.
 There is a configuration file for a custom settings the user wants to install after, or packages that are not icluided in this config.
+
 The config file is in:
 #+begin_example
 ~/.emacs.d/userconf/user-config.el
