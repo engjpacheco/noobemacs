@@ -12,8 +12,6 @@ A very noob distro that have no sense of what are we doing in emacs...
  - [ ] Make a custom file configuration file, something like: /user-config.el/.
  - [ ] Add more org configuration.
 
- #+begin_src emacs-lisp
- #+end_src
 ** Useful scripts, package manger and others.
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path "~/.emacs.d/config/")
