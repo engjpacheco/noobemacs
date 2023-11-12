@@ -1,0 +1,20 @@
+#+TITLE: Noob emacs
+#+AUTHOR: Javier Pacheco
+#+DESCRIPTION: Custom Emacs config.
+#+STARTUP: showeverything
+#+OPTIONS: toc:2
+
+* Noob emacs.
+A very noob distro that have no sense of what are we doing in emacs...
+
+** Install.
+#+begin_src sh
+git clone https://codeberg.org/jpacheco/noobemacs --depth 1 ~/.emacs.d && emacs
+#+end_src
+
+** Configuration.
+There is a configuration file for a custom settings the user wants to install after, or packages that are not icluided in this config.
+The config file is in:
+#+begin_example
+~/.emacs.d/userconf/user-config.el
+#+end_example
