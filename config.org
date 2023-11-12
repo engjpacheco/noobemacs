@@ -8,38 +8,70 @@
 A very noob distro that have no sense of what are we doing in emacs...
 
 * TODO 
- - [ ] Make a readable /config.org/ file.
+ - [X] Make a readable /config.org/ file.
  - [ ] Make a custom file configuration file, something like: /user-config.el/.
  - [ ] Add more org configuration.
 
+ #+begin_src emacs-lisp
+ #+end_src
 ** Useful scripts, package manger and others.
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "~/.emacs.d/scripts/")
+(add-to-list 'load-path "~/.emacs.d/config/")
 (require 'elpaca-setup)  ;; The Elpaca Package Manager
 (require 'buffer-move)   ;; Buffer-move for better window management
+ #+end_src
 
+** Doom-themes.
+#+begin_src emacs-lisp
+(use-package doom-themes
+  :config
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  ;; Sets the default theme to load!!! 
+  (load-theme 'doom-ir-black t)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
+#+end_src
+
+** Icons for a better lock.
+#+begin_src emacs-lisp
 (use-package all-the-icons
-  :ensure t)
-  ;; :if(display-graphic-p))
+  :ensure t
+  :if(display-graphic-p))
 
+(use-package nerd-icons
+  :ensure t)
+#+end_src
+
+** Doom-Modeline.
+#+begin_src emacs-lisp
+(use-package anzu
+  :defer 1
+  :after isearch
+  :config
+  (global-anzu-mode 1))
+
+(use-package minions
+  :defer 1
+  :config
+  (minions-mode 1))
+
+(use-package doom-modeline
+  :demand t
+  :custom
+  (inhibit-compacting-font-caches t)
+  (doom-modeline-height 24)
+  ;; 1 minor mode will be shown thanks to minions
+  (doom-modeline-minor-modes t)
+  (doom-modeline-hud t)
+  :config
+  (doom-modeline-mode 1))
+#+end_src
+
+** Dired.
+#+begin_src emacs-lisp
 (use-package all-the-icons-dired
   :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
-
-(use-package company
-  :defer 2
-  :diminish
-  :custom
-  (company-begin-commands '(self-insert-command))
-  (company-idle-delay .1)
-  (company-minimum-prefix-length 2)
-  (company-show-numbers t)
-  (company-tooltip-align-annotations 't)
-  (global-company-mode t))
-
-(use-package company-box
-  :after company
-  :diminish
-  :hook (company-mode . company-box-mode))
 
 (use-package diminish)
 
@@ -54,87 +86,92 @@ A very noob distro that have no sense of what are we doing in emacs...
 (use-package peep-dired
   :after dired
   :hook (evil-normalize-keymaps . peep-dired-hook)
-  :config
-    (evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory)
-    (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-open-file) ; use dired-find-file instead if not using dired-open package
-    (evil-define-key 'normal peep-dired-mode-map (kbd "j") 'peep-dired-next-file)
-    (evil-define-key 'normal peep-dired-mode-map (kbd "k") 'peep-dired-prev-file)
-)
+  :config)
+#+end_src
 
-;; Expands to: (elpaca evil (use-package evil :demand t))
+** Evil-mode.
+#+begin_src emacs-lisp
 (use-package evil
-    :init      ;; tweak evil's configuration before loading it
-    (setq evil-want-integration t  ;; This is optional since it's already set to t by default.
-          evil-want-keybinding nil
-          evil-vsplit-window-right t
-          evil-split-window-below t
-          evil-undo-system 'undo-redo)  ;; Adds vim-like C-r redo functionality
-    (evil-mode))
+  :init      ;; tweak evil's configuration before loading it
+  (setq evil-want-integration t  ;; This is optional since it's already set to t by default.
+        evil-want-keybinding nil
+        evil-vsplit-window-right t
+        evil-split-window-below t
+        evil-undo-system 'undo-redo)  ;; Adds vim-like C-r redo functionality
+  (evil-mode))
 
 (use-package evil-collection
   :after evil
   :config
-  ;; Do not uncomment this unless you want to specify each and every mode
-  ;; that evil-collection should works with.  The following line is here 
-  ;; for documentation purposes in case you need it.  
-  ;; (setq evil-collection-mode-list '(calendar dashboard dired ediff info magit ibuffer))
-  (add-to-list 'evil-collection-mode-list 'help) ;; evilify help mode
+ (add-to-list 'evil-collection-mode-list 'help) ;; evilify help mode
   (evil-collection-init))
-
 ;; Using RETURN to follow links in Org/Evil 
-;; Unmap keys in 'evil-maps if not done, (setq org-return-follows-link t) will not work
 (with-eval-after-load 'evil-maps
   (define-key evil-motion-state-map (kbd "SPC") nil)
   (define-key evil-motion-state-map (kbd "RET") nil)
   (define-key evil-motion-state-map (kbd "TAB") nil))
+#+end_src
+
+** General settings.
+#+begin_src emacs-lisp
 ;; Setting RETURN key in org-mode to follow links
 (setq org-return-follows-link  t)
 
-(set-face-attribute 'default nil
-  :font "MonoLisa"
-  :height 110
-  :weight 'medium)
-(set-face-attribute 'variable-pitch nil
-  :font "MonoLisa"
-  :height 120
-  :weight 'medium)
-(set-face-attribute 'fixed-pitch nil
-  :font "MonoLisa"
-  :height 110
-  :weight 'medium)
-;; Makes commented text and keywords italics.
-;; This is working in emacsclient but not emacs.
-;; Your font must have an italic face available.
+;; Fonts
+(set-face-attribute 'default nil :height 130)
 (set-face-attribute 'font-lock-comment-face nil
-  :slant 'italic)
+		    :slant 'italic)
 (set-face-attribute 'font-lock-keyword-face nil
-  :slant 'italic)
-
+		    :slant 'italic)
 ;; This sets the default font on all graphical frames created after restarting Emacs.
 ;; Does the same thing as 'set-face-attribute default' above, but emacsclient fonts
 ;; are not right unless I also add this method of setting the default font.
-(add-to-list 'default-frame-alist '(font . "MonoLisa-12"))
+(add-to-list 'default-frame-alist '(font . "MonoLisa-14"))
 ;; Uncomment the following line if line spacing needs adjusting.
 (setq-default line-spacing 0.12)
 
-
-;; Transparency
+;; General Settings
 (set-frame-parameter (selected-frame) 'alpha '(90 . 90))
 (add-to-list 'default-frame-alist '(alpha . (90 . 90)))
 (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (setq inhibit-startup-message t)
 (setq native-comp-async-report-warnings-errors 'silent)
-
-;; Uncomment the following line if line spacing needs adjusting.
-;; (setq-default line-spacing 0.12)
-
+(electric-indent-mode -1)
+(setq org-edit-src-content-indentation 0)
 (global-set-key (kbd "C-=") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
 (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
+(setq confirm-kill-emacs nil)
+(global-set-key [escape] 'keyboard-escape-quit)
 
+(delete-selection-mode 1)    ;; You can select text and delete it by typing.
+(electric-indent-mode -1)    ;; Turn off the weird indenting that Emacs does by default.
+(electric-pair-mode 1)       ;; Turns on automatic parens pairing
+;; The following prevents <> from auto-pairing when electric-pair-mode is on.
+;; Otherwise, org-tempo is broken when you try to <s TAB...
+(add-hook 'org-mode-hook (lambda ()
+			   (setq-local electric-pair-inhibit-predicate
+				       `(lambda (c)
+					  (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+(global-auto-revert-mode t)  ;; Automatically show changes if the file has changed
+(global-display-line-numbers-mode 1)
+(setq display-line-numbers-type 'relative)
+(global-visual-line-mode t)  ;; Enable truncated lines
+(menu-bar-mode -1)           ;; Disable the menu bar 
+(scroll-bar-mode -1)         ;; Disable the scroll bar
+(tool-bar-mode -1)           ;; Disable the tool bar
+(setq org-edit-src-content-indentation 0) ;; Set src block automatic indent to 0 instead of 2.
+(setq redisplay-dont-pause t
+      scroll-margin 5
+      scroll-step 1
+      scroll-conservatively 10000
+      scroll-preserve-screen-position 1)
+#+end_src
 
+** General, Keybinds.
+#+begin_src emacs-lisp
 (use-package general
   :config
   (general-evil-setup)
@@ -173,7 +210,8 @@ A very noob distro that have no sense of what are we doing in emacs...
     "b w" '(bookmark-save :wk "Save current bookmarks to bookmark file"))
 
   (user/leader-keys
-    "d" '(:ignore t :wk "Dired")
+    "d" '(:ignore t :wk "
+Dired")
     "d d" '(dired :wk "Open dired")
     "d f" '(wdired-finish-edit :wk "Writable dired finish edit")
     "o -" '(dired-jump :wk "Dired jump to current")
@@ -232,7 +270,7 @@ A very noob distro that have no sense of what are we doing in emacs...
     "g t" '(git-timemachine :wk "Git time machine")
     "g u" '(magit-stage-file :wk "Git unstage file"))
 
- (user/leader-keys
+  (user/leader-keys
     "h" '(:ignore t :wk "Help")
     "h a" '(counsel-apropos :wk "Apropos")
     "h b" '(describe-bindings :wk "Describe bindings")
@@ -259,7 +297,7 @@ A very noob distro that have no sense of what are we doing in emacs...
     "h m" '(describe-mode :wk "Describe mode")
     "h r" '(:ignore t :wk "Reload")
     "h r r" '((lambda () (interactive)
-                (load-file "~/.config/emacs/init.el")
+                (load-file "~/.emacs.d/init.el")
                 (ignore (elpaca-process-queues)))
               :wk "Reload emacs config")
     "h t" '(load-theme :wk "Load theme")
@@ -336,18 +374,24 @@ A very noob distro that have no sense of what are we doing in emacs...
     ;; Quiting Emacs Options
     "q r" '(restart-emacs :wk "Restart Emacs")
     "q q" '(kill-emacs :wk "Exit Emacs"))
-)
+  )
+#+end_src
 
+** Git.
+#+begin_src emacs-lisp
 (use-package git-timemachine
   :after git-timemachine
   :hook (evil-normalize-keymaps . git-timemachine-hook)
   :config
-    (evil-define-key 'normal git-timemachine-mode-map (kbd "C-j") 'git-timemachine-show-previous-revision)
-    (evil-define-key 'normal git-timemachine-mode-map (kbd "C-k") 'git-timemachine-show-next-revision)
-)
+  (evil-define-key 'normal git-timemachine-mode-map (kbd "C-j") 'git-timemachine-show-previous-revision)
+  (evil-define-key 'normal git-timemachine-mode-map (kbd "C-k") 'git-timemachine-show-next-revision)
+  )
 
 (use-package magit)
+#+end_src
 
+** Hl-TODO.
+#+begin_src emacs-lisp
 (use-package hl-todo
   :hook ((org-mode . hl-todo-mode)
          (prog-mode . hl-todo-mode))
@@ -356,18 +400,38 @@ A very noob distro that have no sense of what are we doing in emacs...
         hl-todo-keyword-faces
         `(("TODO"       warning bold)
           ("FIXME"      error bold)
-          ("HACK"       font-lock-constant-face bold)
+          ("HACK"       font-lock-constant-face italic)
           ("REVIEW"     font-lock-keyword-face bold)
           ("NOTE"       success bold)
           ("DEPRECATED" font-lock-doc-face bold))))
+#+end_src
 
+** Company.
+#+begin_src emacs-lisp
+(use-package company
+  :after lsp-mode
+  :hook (lsp-mode . company-mode)
+  :bind (:map company-active-map
+              ("<tab>" . company-complete-selection))
+  (:map lsp-mode-map
+        ("<tab>" . company-indent-or-complete-common))
+  :custom
+  (company-minimum-prefix-length 1)
+  (company-idle-delay 0.0))
 
+(use-package company-box
+  :hook (company-mode . company-box-mode))
+
+#+end_src
+
+** Counsel & Ivy.
+#+begin_src emacs-lisp
 (use-package counsel
   :after ivy
   :diminish
   :config 
-    (counsel-mode)
-    (setq ivy-initial-inputs-alist nil)) ;; removes starting ^ regex in M-x
+  (counsel-mode)
+  (setq ivy-initial-inputs-alist nil)) ;; removes starting ^ regex in M-x
 
 (use-package ivy
   :bind
@@ -392,30 +456,25 @@ A very noob distro that have no sense of what are we doing in emacs...
   :init (ivy-rich-mode 1) ;; this gets us descriptions in M-x.
   :custom
   (ivy-virtual-abbreviate 'full
-   ivy-rich-switch-buffer-align-virtual-buffer t
-   ivy-rich-path-style 'abbrev)
+			  ivy-rich-switch-buffer-align-virtual-buffer t
+			  ivy-rich-path-style 'abbrev)
   :config
   (ivy-set-display-transformer 'ivy-switch-buffer
                                'ivy-rich-switch-buffer-transformer))
+#+end_src
 
-(global-set-key [escape] 'keyboard-escape-quit)
+** Org.
+- TODO: Add more personal configuration.
 
-;; (use-package doom-modeline
-;;   :ensure t
-;;   :hook (after-init . doom-modeline-mode))
-
-(use-package mood-line
-  :ensure t
-  :init
-  (mood-line-mode))
-
+#+begin_src emacs-lisp
 (use-package toc-org
-    :commands toc-org-enable
-    :init (add-hook 'org-mode-hook 'toc-org-enable))
+  :commands toc-org-enable
+  :init (add-hook 'org-mode-hook 'toc-org-enable))
 
 (add-hook 'org-mode-hook 'org-indent-mode)
 (use-package org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+(add-hook 'org-mode-hook (lambda () 
+			   (org-bullets-mode 1)))
 
 (eval-after-load 'org-indent '(diminish 'org-indent-mode))
 
@@ -433,7 +492,10 @@ A very noob distro that have no sense of what are we doing in emacs...
  '(org-level-7 ((t (:inherit outline-5 :height 1.1)))))
 
 (require 'org-tempo)
+#+end_src
 
+** Perspective.
+#+begin_src emacs-lisp
 (use-package perspective
   :custom
   ;; NOTE! I have also set 'SCP =' to open the perspective menu.
@@ -455,61 +517,126 @@ A very noob distro that have no sense of what are we doing in emacs...
 
 ;; Automatically save perspective states to file when Emacs exits.
 (add-hook 'kill-emacs-hook #'persp-state-save)
+#+end_src
 
+** Rainbow modes.
+#+begin_src emacs-lisp
 (use-package rainbow-delimiters
   :hook ((emacs-lisp-mode . rainbow-delimiters-mode)
          (clojure-mode . rainbow-delimiters-mode)))
 
-(use-package rainbow-mode)
+(use-package rainbow-mode
+  :diminish
+  :hook 
+  ((org-mode prog-mode) . rainbow-mode))
+#+end_src
 
-(delete-selection-mode 1)    ;; You can select text and delete it by typing.
-(electric-indent-mode -1)    ;; Turn off the weird indenting that Emacs does by default.
-(electric-pair-mode 1)       ;; Turns on automatic parens pairing
-;; The following prevents <> from auto-pairing when electric-pair-mode is on.
-;; Otherwise, org-tempo is broken when you try to <s TAB...
-(add-hook 'org-mode-hook (lambda ()
-           (setq-local electric-pair-inhibit-predicate
-                   `(lambda (c)
-                  (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
-(global-auto-revert-mode t)  ;; Automatically show changes if the file has changed
-(global-display-line-numbers-mode 1)
-(setq display-line-numbers-type 'relative)
-(global-visual-line-mode t)  ;; Enable truncated lines
-(menu-bar-mode -1)           ;; Disable the menu bar 
-(scroll-bar-mode -1)         ;; Disable the scroll bar
-(tool-bar-mode -1)           ;; Disable the tool bar
-(setq org-edit-src-content-indentation 0) ;; Set src block automatic indent to 0 instead of 2.
-(setq redisplay-dont-pause t
-  scroll-margin 5
-  scroll-step 1
-  scroll-conservatively 10000
-  scroll-preserve-screen-position 1)
-
-(use-package doom-themes
-  :config
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  ;; Sets the default theme to load!!! 
-  (load-theme 'doom-ir-black t)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
-
+#+begin_src emacs-lisp
 (use-package which-key
   :init
-    (which-key-mode 1)
+  (which-key-mode 1)
   :diminish
   :config
   (setq which-key-side-window-location 'bottom
-	  which-key-sort-order #'which-key-key-order-alpha
-	  which-key-allow-imprecise-window-fit nil
-	  which-key-sort-uppercase-first nil
-	  which-key-add-column-padding 1
-	  which-key-max-display-columns nil
-	  which-key-min-display-lines 6
-	  which-key-side-window-slot -10
-	  which-key-side-window-max-height 0.25
-	  which-key-idle-delay 0.8
-	  which-key-max-description-length 25
-	  which-key-allow-imprecise-window-fit nil
-	  which-key-separator " → " ))
+	which-key-sort-order #'which-key-key-order-alpha
+	which-key-allow-imprecise-window-fit nil
+	which-key-sort-uppercase-first nil
+	which-key-add-column-padding 1
+	which-key-max-display-columns nil
+	which-key-min-display-lines 6
+	which-key-side-window-slot -10
+	which-key-side-window-max-height 0.25
+	which-key-idle-delay 0.8
+	which-key-max-description-length 25
+	which-key-allow-imprecise-window-fit nil
+	which-key-separator " → " ))
+#+end_src
+
+** Personal packages.
+- TODO: Make this file a extra file.
+#+begin_src emacs-lisp
+(use-package denote
+  :config
+  (setq denote-directory "~/org/denotes"
+	denote-known-keywords '("home" "personal")))
+
+(use-package pulsar
+  :config
+  (let ((map global-map))
+    (define-key map (kbd "C-l") #'pulsar-pulse-line)))
+
+(use-package org-auto-tangle
+  :defer t
+  :hook (org-mode . org-auto-tangle-mode)
+  :config
+  (setq org-auto-tangle-default t)
+  (setq pulsar-pulse t)
+  (setq pulsar-delay 0.055)
+  (setq pulsar-iterations 10)
+  (setq pulsar-face 'pulsar-cyan)
+
+  (pulsar-global-mode 1))
+
+(defun efs/lsp-mode-setup ()
+  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (lsp-headerline-breadcrumb-mode))
+
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :hook (lsp-mode . efs/lsp-mode-setup)
+  :init
+  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+  :config
+  (lsp-enable-which-key-integration t))
+
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-position 'bottom))
+
+(use-package lsp-treemacs
+  :after lsp)
+
+(use-package lsp-ivy
+  :after lsp)
+
+(use-package dap-mode
+  ;; Uncomment the config below if you want all UI panes to be hidden by default!
+  :custom
+  (lsp-enable-dap-auto-configure nil)
+  :config
+  (dap-ui-mode 1)
+  :commands dap-debug
+  :config
+  ;; Set up Node debugging
+  (require 'dap-node)
+  (dap-node-setup) ;; Automatically installs Node debug adapter if needed
+
+  ;; Bind `C-c l d` to `dap-hydra` for easy access
+  (general-define-key
+   :keymaps 'lsp-mode-map
+   :prefix lsp-keymap-prefix
+   "d" '(dap-hydra t :wk "debugger")))
+
+(use-package ligature
+  :defer 1
+  :config
+  (ligature-set-ligatures 't '("www"))
+  (ligature-set-ligatures
+   'prog-mode
+   '("-->" "//" "/**" "/*" "*/" "<!--" ":=" "->>" "<<-" "->" "<-"
+     "<=>" "==" "!=" "<=" ">=" "=:=" "!==" "&&" "||" "..." ".."
+     "|||" "///" "&&&" "===" "++" "--" "=>" "|>" "<|" "||>" "<||"
+     "|||>" "<|||" ">>" "<<" "::=" "|]" "[|" "{|" "|}"
+     "[<" ">]" ":?>" ":?" "/=" "[||]" "!!" "?:" "?." "::"
+     "+++" "??" "###" "##" ":::" "####" ".?" "?=" "=!=" "<|>"
+     "<:" ":<" ":>" ">:" "<>" "***" ";;" "/==" ".=" ".-" "__"
+     "=/=" "<-<" "<<<" ">>>" "<=<" "<<=" "<==" "<==>" "==>" "=>>"
+     ">=>" ">>=" ">>-" ">-" "<~>" "-<" "-<<" "=<<" "---" "<-|"
+     "<=|" "/\\" "\\/" "|=>" "|~>" "<~~" "<~" "~~" "~~>" "~>"
+     "<$>" "<$" "$>" "<+>" "<+" "+>" "<*>" "<*" "*>" "</>" "</" "/>"
+     "<->" "..<" "~=" "~-" "-~" "~@" "^=" "-|" "_|_" "|-" "||-"
+     "|=" "||=" "#{" "#[" "]#" "#(" "#?" "#_" "#_(" "#:" "#!" "#="
+     "&="))
+  (global-ligature-mode t))
 #+END_SRC
