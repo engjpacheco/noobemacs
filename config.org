@@ -148,7 +148,7 @@ Package manger and others.
 (setq org-return-follows-link  t)
 
 ;; Fonts
-(set-face-attribute 'default nil :font "MonaspaceNeon Nerd Font" :height 130)
+(set-face-attribute 'default nil :height 130)
 (set-face-attribute 'font-lock-comment-face nil
 		    :slant 'Italic)
 (set-face-attribute 'font-lock-keyword-face nil
