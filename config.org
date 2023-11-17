@@ -448,7 +448,7 @@ Package manger and others.
 
 (add-hook 'org-mode-hook 'org-indent-mode)
 
-(use-package org-bullets
+(Use-package org-bullets
 :elpaca t
   :hook (org-mode . org-bullets-mode)
   :custom

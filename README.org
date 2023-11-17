@@ -1,3 +1,4 @@
+
 #+TITLE: Noob emacs
 #+AUTHOR: Javier Pacheco
 #+DESCRIPTION: Custom Emacs config.
@@ -5,14 +6,16 @@
 #+OPTIONS: toc:2
 
 * Noob emacs.
-A very noob distro that have no sense of what are we doing in emacs...
+This emacs configuration is intended to make it easy to use and configure when starting emacs. It has some "useful" packages, in addition to having a personal configuration file for the user to modify to their liking.
 
 ** Package manager: /elpaca/.
-
-This config uses /elpaca/ as the package manager.
+[[./src/1.jfif][badassalpaca]]
+This config uses /elpaca/ as the package manager. 
+- Why? 
+Because why not.
 
 ** Install.
-#+begin_src sh
+#+begin_src example
 git clone https://codeberg.org/jpacheco/noobemacs --depth 1 ~/.emacs.d && emacs
 #+end_src
 
@@ -23,3 +26,5 @@ The config file is in:
 #+begin_example
 ~/.emacs.d/userconf/user-config.el
 #+end_example
+
+In the /user-config.el/ file the user, could add more setting, packages and more.
