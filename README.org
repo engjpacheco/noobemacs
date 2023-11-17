@@ -9,7 +9,10 @@
 This emacs configuration is intended to make it easy to use and configure when starting emacs. It has some "useful" packages, in addition to having a personal configuration file for the user to modify to their liking.
 
 ** Package manager: /elpaca/.
-[[./src/1.jfif][badassalpaca]]
+#+caption: <img description> (optional)
+#+attr_html: :width 50 px
+#+attr_html: :height 50 px
+[[./src/1.jfif]]
 This config uses /elpaca/ as the package manager. 
 - Why? 
 Because why not.
