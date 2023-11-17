@@ -2,37 +2,6 @@
 
 (setq-default mode-line-format
               '("%e"
-                prot-modeline-kbd-macro
-                prot-modeline-narrow
-                prot-modeline-input-method
-                prot-modeline-buffer-status
-                " "
-                prot-modeline-buffer-identification
-                "  "
-                prot-modeline-major-mode
-                prot-modeline-process
-                "  "
-                prot-modeline-vc-branch
-                "  "
-                prot-modeline-flymake
-                "  "
-                prot-modeline-align-right
-                prot-modeline-misc-info))
-
-
-;; Here I explained why `setq' sets a buffer-local value and discussed
-;; why we need `setq-default' in such cases.
-(setq mode-line-format nil)
-
-(kill-local-variable 'mode-line-format)
-
-(force-mode-line-update)
-
-
-
-
-(setq-default mode-line-format
-              '("%e"
                 my-modeline-buffer-name
                 "  "
                 my-modeline-major-mode))
