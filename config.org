@@ -28,8 +28,9 @@ Package manger and others.
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path "~/.emacs.d/config/")
 (add-to-list 'load-path "~/.emacs.d/userconf/")
-(require 'elpaca-setup)  ;; The Elpaca Package Manager
-(require 'buffer-move)   ;; Buffer-move for better window management
+(require 'elpaca-setup)  	;; The Elpaca Package Manager
+(require 'buffer-move)   	;; Buffer-move for better window management
+(require 'custom-modeline)	;; Custom modeline
  #+end_src
 
 ** Themes.
@@ -48,6 +49,35 @@ Package manger and others.
   :elpaca t
   :ensure t)
 #+end_src
+
+# ** Doom-Modeline.
+# #+begin_src emacs-lisp
+# (use-package anzu
+#   :elpaca t
+#   :defer 1
+#   :after isearch
+#   :config
+#   (global-anzu-mode 1))
+
+# (use-package minions
+#   :elpaca t
+#   :defer 1
+#   :config
+#   (minions-mode 1))
+
+# (use-package doom-modeline
+#   :elpaca t
+#   :demand t
+#   :custom
+#   (inhibit-compacting-font-caches t)
+#   (doom-modeline-height 24)
+#   ;; 1 minor mode will be shown thanks to minions
+#   (doom-modeline-minor-modes t)
+#   (setq doom-modeline-icon t)
+#   :config
+#   (doom-modeline-mode 1))
+
+# #+end_src
 
 ** Dired.
 #+begin_src emacs-lisp
