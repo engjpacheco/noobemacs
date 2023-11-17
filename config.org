@@ -93,7 +93,6 @@ Package manger and others.
   :bind (:map prog-mode-map
          ("C-i" . company-indent-or-complete-common)
          ("C-M-i" . counsel-company))
-  ;; :hook (emacs-lisp-mode . company-mode)
   :hook ((org-mode . company-mode)
          (prog-mode . company-mode)))
 
@@ -110,7 +109,9 @@ Package manger and others.
 (setq org-return-follows-link  t)
 
 ;; Fonts
-(set-face-attribute 'default nil :font "Iosevka NF" :height 120)
+;; Just add the ":font <yourFont>" like the example below.
+;; (set-face-attribute 'default nil :font "Iosevka NF" :height 120)
+(set-face-attribute 'default nil :height 120)
 (set-face-attribute 'font-lock-comment-face nil
 		    :slant 'italic)
 (set-face-attribute 'font-lock-keyword-face nil
@@ -132,7 +133,6 @@ Package manger and others.
 (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
 (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
 (setq confirm-kill-emacs nil)
-;;(add-hook 'after-init-hook 'global-company-mode)
 (eval-after-load 'auto-complete '(global-auto-complete-mode 1))
 (global-set-key [escape] 'keyboard-escape-quit)
 
@@ -201,8 +201,7 @@ Package manger and others.
     "b w" '(bookmark-save :wk "Save current bookmarks to bookmark file"))
 
   (user/leader-keys
-    "d" '(:ignore t :wk "
-Dired")
+    "d" '(:ignore t :wk "Dired")
     "d d" '(dired :wk "Open dired")
     "d f" '(wdired-finish-edit :wk "Writable dired finish edit")
     "o -" '(dired-jump :wk "Dired jump to current")
