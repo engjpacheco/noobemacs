@@ -4,24 +4,6 @@
 #+STARTUP: showeverything
 #+OPTIONS: toc:2
 
-* Table of content 		:toc:
-  - [[#useful-scripts][Useful scripts]]
-  - [[#themes][Themes.]]
-  - [[#icons-for-a-better-lock][Icons for a better lock.]]
-  - [[#dired][Dired.]]
-  - [[#evil-mode][Evil-mode.]]
-  - [[#company][Company.]]
-  - [[#general-settings][General settings.]]
-  - [[#general-keybinds][General, Keybinds.]]
-  - [[#git][Git.]]
-  - [[#hl-todo][Hl-TODO.]]
-  - [[#counsel--ivy][Counsel & Ivy.]]
-  - [[#org][Org.]]
-  - [[#perspective][Perspective.]]
-  - [[#rainbow-modes][Rainbow modes]]
-  - [[#which-key][Which-key.]]
-  - [[#custom-user-config][Custom user config.]]
-
 ** Useful scripts
 Package manger and others.
 
