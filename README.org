@@ -5,14 +5,14 @@
 #+STARTUP: showeverything
 #+OPTIONS: toc:2
 
+* FIXME: Actual status.
+
+Noobemacs is now in maintenance, so it may or not work, so, for now I recommend to *no use this config*.
+
 * Noob emacs.
 This emacs configuration is intended to make it easy to use and configure when starting emacs. It has some "useful" packages, in addition to having a personal configuration file for the user to modify to their liking.
 
 ** Package manager: /elpaca/.
-#+caption: Badass elpaca
-#+attr_html: :width 50 px
-#+attr_html: :height 50 px
-[[./src/1.jfif]]
 This config uses /elpaca/ as the package manager. 
 - Why? 
 Because why not.
@@ -21,13 +21,3 @@ Because why not.
 #+begin_src example
 git clone https://codeberg.org/jpacheco/noobemacs --depth 1 ~/.emacs.d && emacs
 #+end_src
-
-** Configuration.
-There is a configuration file for a custom settings the user wants to install after, or packages that are not icluided in this config.
-
-The config file is in:
-#+begin_example
-~/.emacs.d/userconf/user-config.el
-#+end_example
-
-In the /user-config.el/ file the user, could add more setting, packages and more.
