@@ -1,0 +1,15 @@
+.cache/
+eln-cache/
+elpa/
+elpaca/
+etc/
+snippets/
+transient/
+url/
+var/
+bookmarks
+config.el
+history
+recentf
+sessions
+tramp
