@@ -1,5 +1,4 @@
 #+TITLE: Main config file of noobemacs
-
 #+AUTHOR: Javier Pacheco
 #+DESCRIPTION: Noobemacs config.
 #+STARTUP: showeverything
@@ -35,12 +34,8 @@
       `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 #+end_src
 
-
 * Theme.
 #+begin_src emacs-lisp
-(custom-set-faces
-'(line-number ((t (:background nil)))))
-(setq modus-themes-org-blocks 'gray-background)
 (use-package ef-themes
   :ensure t
   :init (load-theme 'ef-elea-dark t))
@@ -50,7 +45,6 @@
 For a better lock.
 #+begin_src emacs-lisp
 (use-package all-the-icons
-  
   :ensure t
   :if(display-graphic-p))
 
@@ -111,7 +105,7 @@ For a better lock.
 
 ;; Fonts
 ;; Just add the ":font <yourFont>" like the example below.
-(set-face-attribute 'default nil :font "MonaspaceNeon Nerd Font" :height 130)
+;; (set-face-attribute 'default nil :font "MonaspaceNeon Nerd Font" :height 130)
 (set-face-attribute 'font-lock-comment-face nil
 		    :slant 'italic)
 (set-face-attribute 'font-lock-keyword-face nil
@@ -557,3 +551,31 @@ For a better lock.
     (evil-define-key 'normal peep-dired-mode-map (kbd "k") 'peep-dired-prev-file))
 #+end_src
 
+* Hydra.
+#+BEGIN_SRC emacs-lisp
+(use-package hydra
+  :ensure t)
+
+(use-package major-mode-hydra
+  :after hydra)
+
+(defvar ne-toggles--title (with-faicon "toggle-on" "Toggles" 1 -0.05))
+(pretty-hydra-define ne-toggles
+  (:color amaranth :quit-key "q" :title ne-toggles--title)
+  ("Basic"
+   (("n" display-line-numbers-mode "line number" :toggle t)
+    ("w" whitespace-mode "whitespace" :toggle t)
+    ("r" rainbow-mode "rainbow" :toggle t))
+   "Highlight"
+   (("S" pretty-mode "symbol" :toggle t)
+    ("l" hl-line-mode "line" :toggle t)
+    ("t" hl-todo-mode "todo" :toggle t))
+   "Coding"
+   (("f" flycheck-mode "flycheck" :toggle t))
+   "Emacs/org"
+   (("D" toggle-debug-on-error "debug on error" :toggle (default-value 'debug-on-error))
+	("e" evil-mode "Evil mode" :toggle t)
+	("X" toggle-debug-on-quit "debug on quit" :toggle (default-value 'debug-on-quit)))
+   ))
+(global-set-key (kbd "C-c t") 'ne-toggles/body)
+#+END_SRC
