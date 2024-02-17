@@ -453,9 +453,40 @@ For a better lock.
 (eval-after-load 'org-indent '(diminish 'org-indent-mode))
 
 (require 'org-tempo)
-
 #+end_src
+* Git.
+#+BEGIN_SRC emacs-lisp
+(use-package git-timemachine
+  :defer t
+  :hook (evil-normalize-keymaps . git-timemachine-hook)
+  :config
+  (evil-define-key 'normal git-timemachine-mode-map (kbd "C-j") 'git-timemachine-show-previous-revision)
+  (evil-define-key 'normal git-timemachine-mode-map (kbd "C-k") 'git-timemachine-show-next-revision))
+#+END_SRC
+** Magit.
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :defer t)
+#+END_SRC
+** Git-gutter.
+#+BEGIN_SRC emacs-lisp
+(use-package git-gutter
+  :init (global-git-gutter-mode 1)
+  :defer t
+  :config
+  (setq git-gutter:update-interval 0.02))
 
+(use-package git-gutter-fringe
+  :config
+  (define-fringe-bitmap 'git-gutter-fr:added [224] nil nil '(center repeated))
+  (define-fringe-bitmap 'git-gutter-fr:modified [224] nil nil '(center repeated))
+  (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240] nil nil 'bottom))
+#+END_SRC
+** Transient
+#+BEGIN_SRC emacs-lisp
+(use-package transient
+  :defer t)
+#+END_SRC
 * Perspective.
 #+begin_src emacs-lisp
 (use-package perspective
@@ -551,6 +582,56 @@ For a better lock.
     (evil-define-key 'normal peep-dired-mode-map (kbd "k") 'peep-dired-prev-file))
 #+end_src
 
+* Marginalia
+#+BEGIN_SRC emacs-lisp
+(use-package marginalia
+  :after vertico
+  :ensure t
+  :custom
+  (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+  :init
+  (marginalia-mode))
+#+END_SRC
+* Vertico.
+#+BEGIN_SRC emacs-lisp
+;; Enable vertico
+(use-package savehist
+  :config
+    (setq history-length 25)
+    (savehist-mode 1))
+
+(defun dw/minibuffer-backward-kill (arg)
+
+  "When minibuffer is completing a file name delete up to parent
+folder, otherwise delete a word"
+  (interactive "p")
+  (if minibuffer-completing-file-name
+      (if (string-match-p "/." (minibuffer-contents))
+          (zap-up-to-char (- arg) ?/)
+        (delete-minibuffer-contents))
+      (backward-kill-word arg)))
+
+(use-package vertico
+  :bind (:map vertico-map
+			  ("C-j" . vertico-next)
+			  ("C-k" . vertico-previous)
+			  ("C-f" . vertico-exit)
+			  :map minibuffer-local-map
+			  ("M-h" . dw/minibuffer-backward-kill))
+  :custom
+  (vertico-cycle t)
+  :custom-face
+  (vertico-current ((t (:background "#5C6370"))))
+  :init
+  (vertico-mode))
+
+(use-package orderless
+  :init
+  (setq completion-styles '(orderless)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles . (partial-completion))))))
+
+#+END_SRC
 * Hydra.
 #+BEGIN_SRC emacs-lisp
 (use-package hydra
@@ -558,6 +639,22 @@ For a better lock.
 
 (use-package major-mode-hydra
   :after hydra)
+
+(defun with-alltheicon (icon str &optional height v-adjust face)
+  "Display an icon from all-the-icon."
+  (s-concat (all-the-icons-alltheicon icon :v-adjust (or v-adjust 0) :height (or height 1) :face face) " " str))
+
+(defun with-faicon (icon str &optional height v-adjust face)
+  "Display an icon from Font Awesome icon."
+  (s-concat (all-the-icons-faicon icon ':v-adjust (or v-adjust 0) :height (or height 1) :face face) " " str))
+
+(defun with-fileicon (icon str &optional height v-adjust face)
+  "Display an icon from the Atom File Icons package."
+  (s-concat (all-the-icons-fileicon icon :v-adjust (or v-adjust 0) :height (or height 1) :face face) " " str))
+
+(defun with-octicon (icon str &optional height v-adjust face)
+  "Display an icon from the GitHub Octicons."
+  (s-concat (all-the-icons-octicon icon :v-adjust (or v-adjust 0) :height (or height 1) :face face) " " str))
 
 (defvar ne-toggles--title (with-faicon "toggle-on" "Toggles" 1 -0.05))
 (pretty-hydra-define ne-toggles
